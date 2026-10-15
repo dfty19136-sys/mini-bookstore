@@ -154,14 +154,21 @@ app.get('/api/orders/my', requireAuth, async (req, res) => {
 });
 
 // ===================== Start =====================
-const PORT = process.env.PORT || 3000;
+app.get('/', (req, res) => {
+  res.json({ message: 'Mini Bookstore API is running' });
+});
 
 mongoose
   .connect(process.env.MONGODB_URI, { dbName: 'bookstore' })
-  .then(() => {
-    console.log('✅ Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log('🚀 Server running on http://localhost:' + PORT);
-    });
-  })
+  .then(() => console.log('✅ Connected to MongoDB'))
   .catch((err) => console.error('❌ MongoDB connection error:', err.message));
+
+// Locally we start the server ourselves; on Vercel it is started for us
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT ? process.env.PORT : 3000;
+  app.listen(PORT, () => {
+    console.log('🚀 Server running on http://localhost:' + PORT);
+  });
+}
+
+module.exports = app;
