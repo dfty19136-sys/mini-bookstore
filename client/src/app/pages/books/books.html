@@ -1,0 +1,64 @@
+<section class="shop">
+  <div class="catalog">
+    <h1>Our Books</h1>
+
+    <div class="filters">
+      @for (c of categories; track c) {
+        <button [class.active]="selected() === c" (click)="selectCategory(c)">{{ c }}</button>
+      }
+    </div>
+
+    @if (message()) {
+      <p class="error">{{ message() }}</p>
+    }
+    @if (loading()) {
+      <p class="muted">Loading...</p>
+    }
+
+    <div class="grid">
+      @for (book of books(); track book._id) {
+        <article class="card">
+          <div class="cover" [style.background]="book.cover">
+            <span>{{ book.title }}</span>
+          </div>
+          <div class="info">
+            <h3>{{ book.title }}</h3>
+            <p class="author">{{ book.author }}</p>
+            <p class="desc">{{ book.description }}</p>
+            <div class="row">
+              <strong>{{ book.price }} AED</strong>
+              <button (click)="cart.add(book)">Add to cart</button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+
+  <aside class="cart">
+    <h2>Your Cart ({{ cart.count() }})</h2>
+
+    @if (cart.items().length === 0) {
+      <p class="muted">Your cart is empty.</p>
+    } @else {
+      <ul>
+        @for (item of cart.items(); track item.book._id) {
+          <li>
+            <span>{{ item.book.title }}</span>
+            <span class="qty">
+              <button (click)="cart.decrease(item.book._id)">-</button>
+              {{ item.quantity }}
+              <button (click)="cart.add(item.book)">+</button>
+            </span>
+            <span>{{ item.book.price * item.quantity }} AED</span>
+          </li>
+        }
+      </ul>
+      <p class="total">Total: {{ cart.total() }} AED</p>
+      <button class="primary" (click)="placeOrder()">Place order</button>
+      @if (!auth.isLoggedIn()) {
+        <p class="muted">You will be asked to log in first.</p>
+      }
+    }
+  </aside>
+</section>

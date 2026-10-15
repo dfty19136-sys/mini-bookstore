@@ -1,0 +1,25 @@
+<section class="orders">
+  <h1>My Orders</h1>
+
+  @if (message()) {
+    <p class="error">{{ message() }} <a routerLink="/login">Log in</a></p>
+  }
+  @if (!message() && orders().length === 0) {
+    <p class="muted">No orders yet. <a routerLink="/">Browse books</a></p>
+  }
+
+  @for (order of orders(); track order._id) {
+    <article class="order">
+      <header>
+        <span>{{ formatDate(order.createdAt) }}</span>
+        <span class="badge">{{ order.status }}</span>
+      </header>
+      <ul>
+        @for (item of order.items; track $index) {
+          <li>{{ item.title }} x {{ item.quantity }} = {{ item.price * item.quantity }} AED</li>
+        }
+      </ul>
+      <p class="total">Total: {{ order.total }} AED</p>
+    </article>
+  }
+</section>

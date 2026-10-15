@@ -1,0 +1,21 @@
+<header class="navbar">
+  <a routerLink="/" class="logo">📚 Mini Bookstore</a>
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Books ({{ cart.count() }})
+    </a>
+    @if (auth.isLoggedIn()) {
+      <a routerLink="/orders" routerLinkActive="active">My Orders</a>
+      <span class="hello">Hi, {{ auth.userName() }}</span>
+      <button (click)="logout()">Log out</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Log in</a>
+    }
+  </nav>
+</header>
+
+<main class="container">
+  <router-outlet />
+</main>
+
+<footer class="footer">Mini Bookstore - Full Stack training project</footer>

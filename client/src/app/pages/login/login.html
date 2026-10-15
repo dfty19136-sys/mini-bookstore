@@ -1,0 +1,30 @@
+<section class="auth-box">
+  <h1>{{ isRegister() ? 'Create account' : 'Log in' }}</h1>
+
+  <form (ngSubmit)="submit()">
+    @if (isRegister()) {
+      <label>Name
+        <input name="name" [(ngModel)]="name" required />
+      </label>
+    }
+    <label>Email
+      <input type="email" name="email" [(ngModel)]="email" required />
+    </label>
+    <label>Password
+      <input type="password" name="password" [(ngModel)]="password" required minlength="6" />
+    </label>
+
+    @if (message()) {
+      <p class="error">{{ message() }}</p>
+    }
+
+    <button type="submit" class="primary">{{ isRegister() ? 'Sign up' : 'Log in' }}</button>
+  </form>
+
+  <p>
+    {{ isRegister() ? 'Already have an account?' : 'New here?' }}
+    <button type="button" class="link" (click)="toggle()">
+      {{ isRegister() ? 'Log in' : 'Create an account' }}
+    </button>
+  </p>
+</section>

@@ -1,0 +1,9 @@
+.navbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 24px; background: var(--dark); color: white; }
+.logo { color: white; font-weight: 700; font-size: 1.2rem; text-decoration: none; }
+nav { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+nav a { color: #ddd; text-decoration: none; }
+nav a.active { color: white; font-weight: 700; }
+.hello { color: #bbb; }
+nav button { background: transparent; color: white; border: 1px solid #777; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; min-height: 70vh; }
+.footer { text-align: center; padding: 24px; color: var(--muted); font-size: .85rem; }
