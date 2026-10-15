@@ -9,6 +9,26 @@ const jwt = require('jsonwebtoken');
 const app = express();
 app.use(cors());
 app.use(express.json());
+// ===================== Database connection =====================
+// Works locally and on Vercel: every request waits for the connection first
+let dbPromise = null;
+function connectDB() {
+  if (!dbPromise) {
+    dbPromise = mongoose.connect(process.env.MONGODB_URI, { dbName: 'bookstore' });
+  }
+  return dbPromise;
+}
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    dbPromise = null;
+    console.error('MongoDB connection error:', err.message);
+    res.status(500).json({ message: 'Database connection failed' });
+  }
+});
 
 // ===================== Models =====================
 const Book = mongoose.model('Book', new mongoose.Schema({
@@ -158,10 +178,6 @@ app.get('/', (req, res) => {
   res.json({ message: 'Mini Bookstore API is running' });
 });
 
-mongoose
-  .connect(process.env.MONGODB_URI, { dbName: 'bookstore' })
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err.message));
 
 // Locally we start the server ourselves; on Vercel it is started for us
 if (!process.env.VERCEL) {
